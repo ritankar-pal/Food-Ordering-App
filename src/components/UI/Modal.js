@@ -20,6 +20,7 @@ const ModalOverLay = (props) =>{
 
 const portalElement = document.getElementById('overlays');
 
+
 function Modal(props) {
 
 

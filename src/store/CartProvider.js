@@ -4,10 +4,14 @@ import CartContext from "./cart-context";
 
 
 
+
+
 const defaultCartState = {    //Initial State of the cart.
     items: [],               // item will contain a price and amount(quantity to be ordered)
     totalAmount: 0,
 };
+
+
 
 
 const cartReducer = (state, action) =>{
