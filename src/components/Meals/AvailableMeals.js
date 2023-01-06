@@ -44,18 +44,28 @@ import { useEffect, useState } from 'react';
 function AvailableMeals(props) {
 
   const [meals, setMeals] = useState([])
+  const [isLoading, setIsLoading] = useState(true); 
+  const [httpError, setHttpError] = useState();
+
+
 
   useEffect(()=>{
 
-    console.log("USE_EFFECT"); 
+    console.log("USE_EFFECT from AVAILABLE MEALS");
     
+    
+
     const fetchMeals = async () =>{
   
       const response = await fetch("https://food-app-ae160-default-rtdb.firebaseio.com/meals.json");
+
+      if(!response.ok){
+        throw new Error("Something Went Wrong!")
+      }
       
       const responseData = await response.json();  //this is an object
       
-      //we want ot push this objecy in an array: 
+      //we want to push this objecy in an array: 
       
       const loadedMeals = []; 
 
@@ -69,13 +79,49 @@ function AvailableMeals(props) {
       }
 
       setMeals(loadedMeals);
-
+      setIsLoading(false)
+      
     }
+    
 
-    fetchMeals();
+    //Error handling won't work here. Since fetchMeals is an async function so, any error inside will return in "reject state of promise. Hence we have to attach error to fetchMeals({"
+    // try{
+      
+    //   fetchMeals();
+
+    // }catch(error){
+      
+    //   setIsLoading(false)
+    //   setHttpError(error.message)
+    // }
+
+    fetchMeals().catch(error =>{
+      setIsLoading(false)
+      setHttpError(error.message)
+    })
+
   }, [])
 
 
+
+    //Added the Loading state:
+    if (isLoading){
+      return(
+        <section className={styles.Mealsloading}>
+          <p>Loading...</p>
+        </section>
+      )
+    }
+    
+    
+    //Checking Error:
+    if(httpError){
+      return(
+        <section className={styles.MealsError}>
+          <p>{httpError}</p>
+        </section>
+      )
+    }
 
     // const mealsList = DUMMY_MEALS.map((meal)=>(
     const mealsList = meals.map((meal)=>(
