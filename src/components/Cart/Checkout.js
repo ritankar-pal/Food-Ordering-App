@@ -7,7 +7,7 @@ import styles from "./Checkout.module.css";
 
 //Helper function's for validation:
 const isEmpty = (value) => value.trim() === '';
-const isFiveChars = (value) => value.trim() === 5;
+const isFiveChars = (value) => value.trim().length === 5;
 
 
 
@@ -42,21 +42,29 @@ function Checkout(props) {
     const enteredCityIsValid = !isEmpty(enteredCity);
     const enteredPostalCodeIsValid = isFiveChars(enteredPostalCode);
 
-
-    setFormInputsValidity({
-        name: enteredNameIsValid,
-        street: enteredStreetIsValid,
-        postal: enteredPostalCodeIsValid, 
-        city: enteredCityIsValid
-    })
-
-    const formIsVaid = enteredNameIsValid && enteredStreetIsValid && enteredCityIsValid && enteredPostalCodeIsValid;
-
-    if(!formIsVaid){
-        return;
-    }
     
+    
+    setFormInputsValidity({
+      name: enteredNameIsValid,
+      street: enteredStreetIsValid,
+      postal: enteredPostalCodeIsValid, 
+      city: enteredCityIsValid
+    })
+    
+    const formIsVaid = enteredNameIsValid && enteredStreetIsValid && enteredCityIsValid && enteredPostalCodeIsValid;
+    
+    if(!formIsVaid){
+      return;
+    }
 
+    console.log(enteredName,enteredCity,enteredStreet,enteredPostalCode)
+    
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet, 
+      city: enteredCity,
+      postal: enteredPostalCode
+    })
   };
 
 
@@ -88,7 +96,7 @@ function Checkout(props) {
         <label htmlFor="postal">Postal Code</label>
         <input type="text" id="postal" ref={postalCodeInputRef}/>
 
-        {!formInputsValidity.postal && <p>Please Enter A Postal Code</p>}
+        {!formInputsValidity.postal && <p>Please Enter A 5 Char Postal Code</p>}
       </div>
 
       <div className={cityInputClasses}>

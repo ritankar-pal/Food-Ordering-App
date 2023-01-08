@@ -5,6 +5,7 @@ const CartItem = (props) => {
 
   return (
     <li className={classes['cart-item']}>
+    
       <div>
         <h2>{props.name}</h2>
         <div className={classes.summary}>
